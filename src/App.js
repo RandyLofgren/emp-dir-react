@@ -4,49 +4,64 @@ import Wrapper from "./components/Wrapper";
 import Title from "./components/Title";
 import AgeButton from "./components/AgeButton";
 import YearsButton from "./components/YearsButton";
-
+import SearchForm from "./components/SearchForm";
 import axios, {get} from "axios";
 
 
 class App extends Component {
-  // Setting this.state.friends to the friends json array
+
   state = {
-    employees: []
+    employees: [],
+    unTouchedList: [],
+    searchTerm:""
   };
 
  componentDidMount() {
     const pullEmployees =  async  () => {
       const data = await get('https://randomuser.me/api/?results=20&nat=us');
       
-      this.setState({ employees: data.data.results })
+      this.setState({ employees: data.data.results, unTouchedList: data.data.results })
     }
     pullEmployees()
   }
 
-  // componentDidMount() {
-  //   this.searchPeople();
-  // }
-  // searchPeople = query => {
-  //   API.search(query)
-  //     .then(res => this.setState({ result: res.data }))
-  //     .catch(err => console.log(err));
+  // handleInputChange = event => {
+  //   const value = event.target.value;
+  //   const name = event.target.name;
+  //   this.setState({
+  //     [name]: value
+  //   });
   // };
 
-  sortByAge = id => {
-    // Filter this.state.friends for friends with an id not equal to the id being removed
-    const employees = employees.name.sort();
-    // Set this.state.friends equal to the new friends array
+  // handleFormSubmit = event => {
+  //   event.preventDefault();
+    
+  // };
+
+  handleSearch = event =>{
+    const searchValue = event.target.value
+    const filteredList = this.state.unTouchedList.filter(user=>user.name.first.toLowerCase().includes(searchValue.toLowerCase()) || user.name.last.toLowerCase().includes(searchValue.toLowerCase()));
+    this.setState({employees: filteredList, searchTerm: searchValue})
+  }
+
+  // mapped.sort(function(a, b) {
+  //   if (a.name.first > b.name.first) {
+  //     return 1;
+  //   }
+  //   if (a.name.first < b.name.first) {
+  //     return -1;
+  //   }
+  //   return 0;
+  // });
+
+  sortByYears = event => {
+   
+    const employees = this.state.employees.years.sort();
+    
     this.setState({ employees });
   };
 
-  sortByYears = id => {
-    // Filter this.state.friends for friends with an id not equal to the id being removed
-    const employees = employees.name.sort();
-    // Set this.state.friends equal to the new friends array
-    this.setState({ employees });
-  };
-
-  // Map over this.state.friends and render a FriendCard component for each employees object
+  
   render() {
     const empData = this.state.employees
     return (
@@ -54,9 +69,11 @@ class App extends Component {
         {console.log(empData)}
         <AgeButton/>
         <YearsButton/>
-        
         <Title>Employees</Title>
-        
+        <SearchForm 
+          handleSearch={this.handleSearch} 
+          searchTerm={this.state.searchTerm}
+        />
         {empData.map(employee => (
           <EmpCard
             
