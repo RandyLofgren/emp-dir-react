@@ -13,7 +13,7 @@ function EmpCard(props) {
             <strong>Name:</strong> {props.name}
           </li>
           <li>
-            <strong>Age:</strong> {props.occupation}
+            <strong>Age:</strong> {props.age}
           </li>
           <li>
             <strong>Years Working:</strong> {props.location}

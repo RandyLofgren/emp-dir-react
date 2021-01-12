@@ -4,23 +4,34 @@ import Wrapper from "./components/Wrapper";
 import Title from "./components/Title";
 import AgeButton from "./components/AgeButton";
 import YearsButton from "./components/YearsButton";
-import employees from "./employees.json";
+// import employees from "./employees.json";
 import API from "./components/utils/API";
+import axios, {get} from "axios";
 
 
 class App extends Component {
   // Setting this.state.friends to the friends json array
   state = {
-    employees
+    employees: []
   };
-  componentDidMount() {
-    this.searchPeople();
+
+ componentDidMount() {
+    const pullEmployees =  async  () => {
+      const data = await get('https://randomuser.me/api/?results=20&nat=us');
+      
+      this.setState({ employees: data.data.results })
+    }
+    pullEmployees()
   }
-  searchPeople = query => {
-    API.search(query)
-      .then(res => this.setState({ result: res.data }))
-      .catch(err => console.log(err));
-  };
+
+  // componentDidMount() {
+  //   this.searchPeople();
+  // }
+  // searchPeople = query => {
+  //   API.search(query)
+  //     .then(res => this.setState({ result: res.data }))
+  //     .catch(err => console.log(err));
+  // };
 
   sortByAge = id => {
     // Filter this.state.friends for friends with an id not equal to the id being removed
@@ -38,21 +49,23 @@ class App extends Component {
 
   // Map over this.state.friends and render a FriendCard component for each employees object
   render() {
+    const empData = this.state.employees
     return (
       <Wrapper>
+        {console.log(empData)}
         <AgeButton/>
         <YearsButton/>
         
         <Title>Employees</Title>
         
-        {this.state.employees.map(employees => (
+        {empData.map(employee => (
           <EmpCard
-            id={employees.id}
-            key={employees.id}
-            name={employees.name}
-            image={employees.image}
-            occupation={employees.occupation}
-            location={employees.location}
+            id={employee.id}
+            key={employee.id}
+            name={employee.name.first + " " + employee.name.last}
+            image={employee.picture.large}
+            age={employee.dob.age}
+            location={employee.registered.age}
           />
         ))}
       </Wrapper>
