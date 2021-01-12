@@ -64,7 +64,7 @@ class App extends Component {
             name={employee.name.first + " " + employee.name.last}
             image={employee.picture.large}
             age={employee.dob.age}
-            location={employee.registered.age}
+            years={employee.registered.age}
           />
         ))}
       </Wrapper>
