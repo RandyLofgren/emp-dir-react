@@ -4,8 +4,7 @@ import Wrapper from "./components/Wrapper";
 import Title from "./components/Title";
 import AgeButton from "./components/AgeButton";
 import YearsButton from "./components/YearsButton";
-// import employees from "./employees.json";
-import API from "./components/utils/API";
+
 import axios, {get} from "axios";
 
 
@@ -60,8 +59,8 @@ class App extends Component {
         
         {empData.map(employee => (
           <EmpCard
-            id={employee.id}
-            key={employee.id}
+            
+            key={employee.login.username}
             name={employee.name.first + " " + employee.name.last}
             image={employee.picture.large}
             age={employee.dob.age}
