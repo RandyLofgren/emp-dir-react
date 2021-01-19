@@ -7,12 +7,12 @@ const TableRow = props => {
       
       <tr>
           
-      <td className="img-container col-md-2">
+      <td className="">
         <img alt={props.name} src={props.image} />
       </td>
-        <td className ="col-md-2">{props.first}</td> 
-        <td className="col-md-2">{props.last}</td> 
-        <td className="col-md-2">{props.age}</td> 
+        <td className ="">{props.first}</td> 
+        <td className="">{props.last}</td> 
+        <td className="">{props.age}</td> 
       </tr>
       
   

@@ -8,3 +8,18 @@ html, body, #root {
   margin: 0;
   height: 100%;
 }
+.tableHolder{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.wrap{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+table{
+  width: 80%;
+}
+.click{
+  cursor: pointer;
+}

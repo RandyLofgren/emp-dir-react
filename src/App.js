@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import Wrapper from "./components/Wrapper";
+
 import Title from "./components/Title";
 import TableRow from "./components/TableRow";
 import SearchForm from "./components/SearchForm";
-import axios, { get } from "axios";
-
+import { get } from "axios";
+import './index.css'
 
 class App extends Component {
 
   state = {
     employees: [],
     unTouchedList: [],
-    searchTerm: ""
+    searchTerm: "",
+    direction: ""
   };
 
   componentDidMount() {
@@ -42,7 +43,9 @@ class App extends Component {
     this.setState({ employees: filteredList, searchTerm: searchValue })
   }
 
-  // mapped.sort(function(a, b) {
+  //  mapFirst = [this.state.employees]
+
+  // mapFirst.sort(a, b) {
   //   if (a.name.first > b.name.first) {
   //     return 1;
   //   }
@@ -50,16 +53,73 @@ class App extends Component {
   //     return -1;
   //   }
   //   return 0;
-  // });
+  // };
 
-  handleFirstSort = event => {
-    console.log("Clicked First Name") 
- }
 
+  handleAgeSort = (whatToSort1, whatToSort2) => {
+    const sortedList = this.state.employees.sort((a, b) => {
+      let fa = a[whatToSort1][whatToSort2],
+        fb = b[whatToSort1][whatToSort2];
+        if (this.state.direction !== "asc"){
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        }else{
+          if (fa > fb) {
+            return -1;
+          }
+          if (fa < fb) {
+            return 1;
+          }
+          return 0;
+        }
+   } )
+   const newDirection = this.state.direction !== "asc" ? "asc" : "dec"
+   this.setState({
+     employees: sortedList,
+     direction: newDirection
+   })
+  } 
+
+
+
+  handleFirstSort = (whatToSort1, whatToSort2) => {
+    const sortedList = this.state.employees.sort((a, b) => {
+      let fa = a[whatToSort1][whatToSort2].toLowerCase(),
+        fb = b[whatToSort1][whatToSort2].toLowerCase();
+        if (this.state.direction !== "asc"){
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        }else{
+          if (fa > fb) {
+            return -1;
+          }
+          if (fa < fb) {
+            return 1;
+          }
+          return 0;
+        }
+   } )
+   const newDirection = this.state.direction !== "asc" ? "asc" : "dec"
+   this.setState({
+     employees: sortedList,
+     direction: newDirection
+   })
+  } 
+  
   render() {
     const empData = this.state.employees
     return (
-      <Wrapper>
+      <div className="wrap">
         {console.log(empData)}
 
 
@@ -69,30 +129,33 @@ class App extends Component {
           handleSearch={this.handleSearch}
           searchTerm={this.state.searchTerm}
         />
-       
-       <table className="table table-striped table-hover table-bordered">
-    <thead>
-      <tr>
-        <th scope="col" >Pic</th>
-        <th scope="col" onClick={e => console.log("Clicked First")}>First</th>
-        <th scope="col" onClick={e => console.log("Clicked Last")}>Last</th>
-        <th scope="col" onClick={e => console.log("Clicked Age")}>Age</th>
-      </tr>
-    </thead>
-    <tbody>
-          {empData.map(employee => (
-            <TableRow
+        <div className="tableHolder">
 
-              key={employee.login.username}
-              first={employee.name.first}
-              image={employee.picture.medium}
-              age={employee.dob.age}
-              last={employee.name.last}
-            />
-            ))}
-             </tbody>
-  </table>
-      </Wrapper>
+          <table className="table table-striped ">
+            <thead>
+              <tr>
+                <th scope="col" >Picture</th>
+                <th scope="col" className="click" onClick={()=>this.handleFirstSort("name","first")}
+                >First</th>
+                <th scope="col" className="click" onClick={()=>this.handleFirstSort("name","last")}>Last</th>
+                <th scope="col" className="click" onClick={()=>this.handleAgeSort("dob","age")}>Age</th>
+              </tr>
+            </thead>
+            <tbody>
+              {empData.map(employee => (
+                <TableRow
+
+                  key={employee.login.username}
+                  first={employee.name.first}
+                  image={employee.picture.medium}
+                  age={employee.dob.age}
+                  last={employee.name.last}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div >
     );
   }
 }
